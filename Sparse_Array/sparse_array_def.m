@@ -1,6 +1,6 @@
 function pos_final = sparse_array_def()
 
-    pos_final = zeros(3,16);
+    pos_final = zeros(3,15);
     sz = 200;
     %sz = 37.96;
 
