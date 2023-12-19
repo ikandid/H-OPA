@@ -1,0 +1,63 @@
+function [d_nn, d_min, d_max, d_avg] = min_array_dist2(pos_final)
+    
+    %pos_final = pos_final_scaled;
+    %plot the element positions
+    figure
+    scatter(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,'filled','k');
+    xlabel('x(um)','Fontsize',14)
+    ylabel('y(um)','Fontsize',14)
+    
+    %labels each element with an index
+    label = cellstr(num2str([1:length(pos_final)]'));
+    text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,label);grid on;
+    
+    %Distances
+    d_nn = [];
+    n_nn = [];
+
+    %Point-of-interest(POI)
+    for POI = 1:length(pos_final)
+        newpoint = [pos_final(1,POI) pos_final(2,POI) 0];
+    
+        %plot the POI with the antenna array
+        hold on; scatter(newpoint(:,1)/1e-6,newpoint(:,2)/1e-6,'x','color','red'); 
+    
+        %find the 3 nearest neighboring points 
+        [n,d] = knnsearch(pos_final',newpoint,'k',6,'distance','euclidean');
+        
+        %store the distances and NNs
+        d_nn(POI,:) = d;
+        n_nn(POI,:) = n;
+        n1 = unique(n);
+        %n1(n1 == POI) = [];
+        N_closest = pos_final(:,n);
+    
+        %plot the neighboring results points
+        hold on
+        for i=1:length(N_closest)
+            line([pos_final(1,POI), N_closest(1,i)]/1e-6,[pos_final(2,POI), N_closest(2,i)]/1e-6,'color',[.5 .5 .5],'marker','o');
+        end
+    end
+    
+    d_min = min(min(d_nn(:,2:4)));
+    d_max = max(max(d_nn(:,2:4)));
+    d_avg = sum(sum(d_nn(:,2:4)))/numel(d_nn(:,2:4));
+    
+    %{
+    %Scaling (i.e  new point locations)
+    pos_final_scaled = pos_final;
+    min_dist = 10e-6;
+    for i = 2:length(N_closest)
+        A = [pos_final(1,POI) pos_final(2,POI)];
+        B = [pos_final(1,n(i)) pos_final(2,n(i))];
+        t = 1-min_dist/d(i);
+        C = B + (A-B)*t;
+
+        pos_final_scaled(1,n(i)) = C(1); %new x-position
+        pos_final_scaled(2,n(i)) = C(2); %new y-position   
+    end
+    
+    
+    %sqrt((pos_final(1,2)-pos_final(1,3))^2+(pos_final(2,2)-pos_final(2,3))^2);
+    %}
+
