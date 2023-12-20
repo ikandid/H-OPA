@@ -5,10 +5,6 @@ c = 3e8;
 fc = 193e12;
 lambda = c/fc;
 
-
-load('antenna_data(SK).mat') %load the antenna
-SK_ant = imresize(pat_azel(:,181,20).',resolution); %increase the resolution
-
 if theta_90 == 0
     theta=linspace(0,90,resolution*91);
 elseif theta_90 == 1

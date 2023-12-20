@@ -2,12 +2,6 @@
 %function that calculates the Array Factor
 function [Intensity_norm,Intensity_dB,u,v,theta,phi,SLL]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90)
 
-
-%load('antenna_data(SK).mat')
-
-%SK_ant = pat_azel(:,:,20).'; %Shahrzad's antenna data @ 1550 nm
-%SK_ant = imresize(pat_azel(:,181,20).',resolution); %increase the resolution
-
 %paramaters
 res=1; %resolution
 k=2*pi/lambda;%wavenumber
@@ -52,7 +46,7 @@ end
 %figures
 if figure_on_off == 1
     figure
-    surf(u,v,Intensity_norm)
+    surf(u,v,Intensity)
     shading interp;
     colormap('default');
     xlabel('U')
@@ -60,27 +54,6 @@ if figure_on_off == 1
     zlim([0 1])
     %title('3D Response Pattern in u-v space','Fontsize',12)
 end
-
-%Spherical coordinates view
-% figure()
-% surf(theta,phi,Intensity_dB)
-% shading interp;
-% colormap('default');
-% xlabel('\theta')
-% ylabel('\phi')
-
-% %Ryans SL calculator
-% temp = Intensity_dB;
-% idx = ceil(find(temp == max(temp)));
-% temp(idx) = -50;
-% figure()
-% surf(u,v,temp);
-% shading interp;
-% colormap('default');
-% xlabel('U')
-% ylabel('V')
-% Sidelobe_of_Arrayfactor = max(max(temp));
-% polss = 1;
 
 %Mainlobe removal
 %u&v coordinates 

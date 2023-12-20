@@ -5,7 +5,7 @@ c = 3e8;
 fc = 193e12;
 lambda = c/fc;
 k=2*pi/lambda;%wavenumber
-theta_0=2.5; %theta steering angle
+theta_0=0; %theta steering angle
 phi_0=0; %phi steering angle
 theta_90=1; %0 for 0:90/ 1 for -90:90
 ant = 0; %0 for isotropic antenna/ 1 for selected antenna
@@ -27,3 +27,9 @@ ylim([-100 100])
 %labels each element with an index
 label = cellstr(num2str([1:length(pos_final)]'));
 text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,label);
+
+%% Array Factor calculation
+
+%define the AF and Intensity distributions
+%[Intensity_norm,Intensity_dB,u,v,theta,phi]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90)
+[Intensity_norm,Intensity_dB,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,1,theta_0,phi_0,ant,1);
