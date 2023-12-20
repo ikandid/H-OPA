@@ -40,3 +40,6 @@ text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,label);
 res = 10;
 [Intensity_norm_theta,Intensity_dB_theta,p,theta,c,index,BW_3dB_theta,SLL_theta]=theta_cut(1,1,1,length(pos_final),res,0,pos_final,1,theta_0,ant,theta_90);
 
+%% Random phase implementation 
+x0 = 2*pi*rand(1,15); %random phase matrix between 0-2pi
+
