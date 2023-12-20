@@ -28,9 +28,15 @@ ylim([-100 100])
 label = cellstr(num2str([1:length(pos_final)]'));
 text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,label);
 
-%% Array Factor calculation
+%% 3D Array factor calculation
 
 %define the AF and Intensity distributions
 %[Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90)
 [Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,1,theta_0,phi_0,ant,1);
+
+%% 2D Array factor caclulation
+%theta cut
+%[Intensity_norm_theta,Intensity_dB_theta,p,theta,c,index,BW_3dB_theta,SLL_theta,w]=theta_cut(A,B,C,D,resolution,p,pos_final,figure_on_off,theta_0,ant,theta_90)
+res = 10;
+[Intensity_norm_theta,Intensity_dB_theta,p,theta,c,index,BW_3dB_theta,SLL_theta]=theta_cut(1,1,1,length(pos_final),res,0,pos_final,1,theta_0,ant,theta_90);
 
