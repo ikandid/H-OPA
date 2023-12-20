@@ -1,5 +1,5 @@
 %theta cut
-function [Intensity_norm_theta,Intensity_dB_theta,p,theta,c,index,BW_3dB_theta,SLL_theta,w]=theta_cut(A,B,C,D,resolution,p,pos_final,figure_on_off,theta_0,ant,theta_90)
+function [Intensity_norm_theta,Intensity_dB_theta,p,theta,c,index,BW_3dB_theta,SLL_theta,w]=theta_cut(A,B,C,D,resolution,p,pos_final,figure_on_off,theta_0,ant,theta_90,phase_off)
 
 %parameters
 c = 3e8;
@@ -25,14 +25,14 @@ v_0=sind(theta_0).*sind(transpose(p));
 AF_theta=0;
 %[w,w_n]=weights_1_V2(A,B,C,D);
 
-phase_offset = [];
+phase_steer = [];
 for n=1:A*B*C*D
     %w(end+1)=1;
-    phase_offset(end+1) = k*(pos_final(1,n)*u_0+pos_final(2,n)*v_0);
-    AF_theta=AF_theta+exp(j*k*(pos_final(1,n)*u+pos_final(2,n)*v)-j*phase_offset(n));
+    phase_steer(end+1) = k*(pos_final(1,n)*u_0+pos_final(2,n)*v_0);
+    AF_theta=AF_theta+exp(j*k*(pos_final(1,n)*u+pos_final(2,n)*v)-j*phase_steer(n));
     %AF_theta=AF_theta+w(n)*exp(j*k*(pos_final(1,n)*u+pos_final(2,n)*v)+j*k*(pos_final(1,n)*u_0+pos_final(2,n)*v_0));
 end
-phase_offset = mod(phase_offset,2*pi);
+phase_steer = mod(phase_steer,2*pi);
 AF_mag=abs(AF_theta);
 
 %Intensity & Normalized Intensity

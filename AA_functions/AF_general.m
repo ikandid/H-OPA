@@ -1,6 +1,6 @@
 %AF_general
 %function that calculates the Array Factor
-function [Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi,SLL]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90)
+function [Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi,SLL]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90,phase_off)
 
 %paramaters
 res=1; %resolution
@@ -18,14 +18,18 @@ phi=linspace(-180,180,res*361);
 u=sind(theta).*cosd(transpose(phi));
 v=sind(theta).*sind(transpose(phi));
 
-u_0=sind(-theta_0).*cosd(transpose(-phi_0)); %scanning variables
-v_0=sind(-theta_0).*sind(transpose(-phi_0));
+%Steering paramters
+u_0=sind(theta_0).*cosd(transpose(phi_0)); 
+v_0=sind(theta_0).*sind(transpose(phi_0));
 
 %AF definition
 AF=0;
 %[w,w_n]=weights_1_V2(A,B,C,D);
+
+phase_steer = [];
 for n=1:A*B*C*D
-    AF=AF+exp(j*k*(pos_final(1,n)*u+pos_final(2,n)*v)+j*k*(pos_final(1,n)*u_0+pos_final(2,n)*v_0));
+    phase_steer(end+1) = k*(pos_final(1,n)*u_0+pos_final(2,n)*v_0);
+    AF=AF+exp(j*k*(pos_final(1,n)*u+pos_final(2,n)*v)-j*phase_steer(n));
 end
 
 %Intensity & Normalized Intensity
