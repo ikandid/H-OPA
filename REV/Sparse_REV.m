@@ -31,5 +31,6 @@ text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,label);
 %% Array Factor calculation
 
 %define the AF and Intensity distributions
-%[Intensity_norm,Intensity_dB,u,v,theta,phi]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90)
-[Intensity_norm,Intensity_dB,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,1,theta_0,phi_0,ant,1);
+%[Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90)
+[Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,1,theta_0,phi_0,ant,1);
+

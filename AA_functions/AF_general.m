@@ -1,6 +1,6 @@
 %AF_general
 %function that calculates the Array Factor
-function [Intensity_norm,Intensity_dB,u,v,theta,phi,SLL]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90)
+function [Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi,SLL]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90)
 
 %paramaters
 res=1; %resolution
@@ -33,6 +33,7 @@ end
 if ant == 0 %no antenna
     AF_mag=abs(AF);
     Intensity=AF_mag.^2;
+    Intensity_max = max(max(Intensity));
     Intensity_norm=Intensity/max(max(Intensity));
     Intensity_dB=10.*log10(Intensity_norm);
 elseif ant == 1 %w/ antenna
@@ -46,13 +47,13 @@ end
 %figures
 if figure_on_off == 1
     figure
-    surf(u,v,Intensity_norm)
+    surf(u,v,Intensity)
     shading interp;
     colormap('default');
     xlabel('U')
     ylabel('V')
-    zlim([0 1])
-    %title('3D Response Pattern in u-v space','Fontsize',12)
+    %zlim([0 1])
+    title('3D Response Pattern in u-v space','Fontsize',12)
 end
 
 %Mainlobe removal
