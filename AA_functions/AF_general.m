@@ -46,7 +46,7 @@ end
 %figures
 if figure_on_off == 1
     figure
-    surf(u,v,Intensity)
+    surf(u,v,Intensity_norm)
     shading interp;
     colormap('default');
     xlabel('U')
@@ -80,16 +80,16 @@ else
     SLL=max(max(pat_uv_dB));
 end
 
-if figure_on_off == 1
-    figure
-    surf(u,v,Intensity_norm)
-    shading interp;
-    colormap('default');
-    xlabel('U')
-    ylabel('V')
-    zlim([0 1])
-    %title('3D Response Pattern in u-v space','Fontsize',12)
-end
+% if figure_on_off == 1
+%     figure
+%     surf(u,v,Intensity_norm)
+%     shading interp;
+%     colormap('default');
+%     xlabel('U')
+%     ylabel('V')
+%     zlim([0 1])
+%     %title('3D Response Pattern in u-v space','Fontsize',12)
+% end
 
 % figure()
 % surf(theta,phi,Intensity_dB)
