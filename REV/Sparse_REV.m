@@ -56,3 +56,4 @@ ylabel('Phase (rad)')
 [Intensity_norm_theta,Intensity_dB_theta,p,theta,c,index,BW_3dB_theta,SLL_theta]=theta_cut(1,1,1,length(pos_final),res,0,pos_final,1,theta_0,ant,theta_90,x0);
 
 %% Determine the optimization point
+Opt = find(theta == 0);
