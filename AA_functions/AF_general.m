@@ -29,7 +29,7 @@ AF=0;
 phase_steer = [];
 for n=1:A*B*C*D
     phase_steer(end+1) = k*(pos_final(1,n)*u_0+pos_final(2,n)*v_0);
-    AF=AF+exp(j*k*(pos_final(1,n)*u+pos_final(2,n)*v)-j*phase_steer(n));
+    AF=AF+exp(j*k*(pos_final(1,n)*u+pos_final(2,n)*v)-j*phase_steer(n)-j*phase_off(n));
 end
 
 %Intensity & Normalized Intensity

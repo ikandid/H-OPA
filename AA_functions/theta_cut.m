@@ -29,7 +29,7 @@ phase_steer = [];
 for n=1:A*B*C*D
     %w(end+1)=1;
     phase_steer(end+1) = k*(pos_final(1,n)*u_0+pos_final(2,n)*v_0);
-    AF_theta=AF_theta+exp(j*k*(pos_final(1,n)*u+pos_final(2,n)*v)-j*phase_steer(n));
+    AF_theta=AF_theta+exp(j*k*(pos_final(1,n)*u+pos_final(2,n)*v)-j*phase_steer(n)-j*phase_off(n));
     %AF_theta=AF_theta+w(n)*exp(j*k*(pos_final(1,n)*u+pos_final(2,n)*v)+j*k*(pos_final(1,n)*u_0+pos_final(2,n)*v_0));
 end
 phase_steer = mod(phase_steer,2*pi);
