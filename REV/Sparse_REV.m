@@ -40,8 +40,8 @@ phase_off = zeros(1,length(pos_final));
 %% 2D Array factor caclulation
 %theta cut
 %[Intensity_norm_theta,Intensity_dB_theta,p,theta,c,index,BW_3dB_theta,SLL_theta,w]=theta_cut(A,B,C,D,resolution,p,pos_final,figure_on_off,theta_0,ant,theta_90,phase_off)
-res = 10;
-[Intensity_norm_theta,Intensity_dB_theta,p,theta,c,index,BW_3dB_theta,SLL_theta]=theta_cut(1,1,1,length(pos_final),res,0,pos_final,1,theta_0,ant,theta_90,phase_off);
+res = 1;
+[Intensity_norm_theta,Intensity_dB_theta,p,theta,c,index,BW_3dB_theta,SLL_theta,nulls]=theta_cut(1,1,1,length(pos_final),res,0,pos_final,1,theta_0,ant,theta_90,phase_off);
 
 %% Random phase implementation 
 x0 = 2*pi*rand(1,15); %random phase matrix between 0-2pi
@@ -55,3 +55,4 @@ ylabel('Phase (rad)')
 [Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,1,theta_0,phi_0,ant,1,x0);
 [Intensity_norm_theta,Intensity_dB_theta,p,theta,c,index,BW_3dB_theta,SLL_theta]=theta_cut(1,1,1,length(pos_final),res,0,pos_final,1,theta_0,ant,theta_90,x0);
 
+%% Determine the optimization point
