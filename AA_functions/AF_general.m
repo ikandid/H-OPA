@@ -51,7 +51,7 @@ end
 %figures
 if figure_on_off == 1
     figure
-    surf(u,v,Intensity)
+    surf(u,v,Intensity_norm)
     shading interp;
     colormap('default');
     xlabel('U')
@@ -59,6 +59,13 @@ if figure_on_off == 1
     %zlim([0 1])
     title('3D Response Pattern in u-v space','Fontsize',12)
 end
+
+figure()
+surf(theta,phi,Intensity_norm)
+shading interp;
+colormap('default');
+xlabel('\theta')
+ylabel('\phi')
 
 %Mainlobe removal
 %u&v coordinates 
@@ -96,10 +103,10 @@ end
 %     %title('3D Response Pattern in u-v space','Fontsize',12)
 % end
 
-% figure()
-% surf(theta,phi,Intensity_dB)
-% shading interp;
-% colormap('default');
-% xlabel('\theta')
-% ylabel('\phi')
+figure()
+surf(theta,phi,Intensity_norm)
+shading interp;
+colormap('default');
+xlabel('\theta')
+ylabel('\phi')
 
