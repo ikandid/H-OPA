@@ -1,4 +1,5 @@
 %%REV method for sparse array
+close all;
 
 %% Parameters
 c = 3e8;
@@ -35,7 +36,7 @@ phase_off = zeros(1,length(pos_final)); %no phase offset
 
 %define the AF and Intensity distributions
 %[Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90,phase_off)
-[Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,1,theta_0,phi_0,ant,1,phase_off);
+[Intensity_norm,Intensity_dB,Intensity_max,Intensity_sum,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,1,theta_0,phi_0,ant,1,phase_off);
 
 %% 2D Array factor caclulation
 %theta cut
@@ -45,6 +46,7 @@ res = 1;
 
 %% Random phase implementation 
 x0 = 2*pi*rand(1,15); %random phase matrix between 0-2pi
+Int_sum = Intensity_sum;
 
 figure 
 scatter(1:15,x0,'o','filled')
@@ -52,11 +54,11 @@ xlabel('Channel number')
 ylabel('Phase (rad)')
 
 %Calculate AF for random phase and plot intensity
-[Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,1,theta_0,phi_0,ant,1,x0);
+[Intensity_norm,Intensity_dB,Intensity_max,Intensity_sum,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,1,theta_0,phi_0,ant,1,x0);
 [Intensity_norm_theta,Intensity_dB_theta,p,theta,c,index,BW_3dB_theta,SLL_theta]=theta_cut(1,1,1,length(pos_final),res,0,pos_final,1,theta_0,ant,theta_90,x0);
 
 %% Determine the optimization point
 opt_x = find(theta == 0);
 opt_y = find(phi == 0);
 
-REV_opt(Intensity_norm, x0, opt_x, nulls);
+REV_opt(Intensity_norm, Int_sum, x0, opt_x, nulls);
