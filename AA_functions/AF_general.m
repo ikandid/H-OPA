@@ -81,14 +81,17 @@ else
     null = null_v;
 end
 
+Intensity_sum = sum(sum(Intensity_norm(:,max_loc_u(1)-null_u:max_loc_u(1)+null_u)));
+Intensity_norm_SLL = Intensity_norm; %Dummy variable for calculating the SLL
+
 if (max_loc_u(1) - null_u) <= 0 
     fprintf('Invalid array index')
     SLL = 0;
 else
-    Intensity_norm(:,max_loc_u(1)-null_u:max_loc_u(1)+null_u)=0;
-    Intensity_dB=10.*log10(Intensity_norm);
+    Intensity_norm_SLL(:,max_loc_u(1)-null_u:max_loc_u(1)+null_u)=0;
+    Intensity_dB=10.*log10(Intensity_norm_SLL);
     %Convert to dB
-    pat_uv_dB = 10.*log10(Intensity_norm);
+    pat_uv_dB = 10.*log10(Intensity_norm_SLL);
     SLL=max(max(pat_uv_dB));
 end
 
@@ -103,10 +106,10 @@ end
 %     %title('3D Response Pattern in u-v space','Fontsize',12)
 % end
 
-figure()
-surf(theta,phi,Intensity_norm)
-shading interp;
-colormap('default');
-xlabel('\theta')
-ylabel('\phi')
+% figure()
+% surf(theta,phi,Intensity_norm)
+% shading interp;
+% colormap('default');
+% xlabel('\theta')
+% ylabel('\phi')
 
