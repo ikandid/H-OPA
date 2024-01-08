@@ -31,7 +31,7 @@ text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,label);
 %% 3D Array factor calculation
 
 %Phase Offset
-phase_off = zeros(1,length(pos_final));
+phase_off = zeros(1,length(pos_final)); %no phase offset
 
 %define the AF and Intensity distributions
 %[Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90,phase_off)
