@@ -1,5 +1,6 @@
 %%REV method for sparse array
 close all;
+clear all;
 
 %% Parameters
 c = 3e8;
