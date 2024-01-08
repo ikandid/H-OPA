@@ -58,3 +58,5 @@ ylabel('Phase (rad)')
 %% Determine the optimization point
 opt_x = find(theta == 0);
 opt_y = find(phi == 0);
+
+REV_opt(Intensity_norm, x0, opt_x, nulls);
