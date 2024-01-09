@@ -31,7 +31,7 @@ function REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
 
     yu = max(Intensity_ratio);
     yl = min(Intensity_ratio);
-    yr = (yu-yl);                               % Range of ‘y’
+    yr = (yu-yl);                               % Range of �y�
     yz = y-yu+(yr/2);
     zx = x(yz .* circshift(yz,[0 1]) <= 0);     % Find zero-crossings
     per = 2*mean(diff(zx));                     % Estimate period
@@ -39,17 +39,19 @@ function REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
 
     fit = @(b,x)  b(1).*(sin(2*pi*x./b(2) + 2*pi/b(3))) + b(4);    % Function to fit
     fcn = @(b) sum((fit(b,x) - y).^2);                              % Least-Squares cost function
-    s = fminsearch(fcn, [yr;  per;  -1;  ym])                       % Minimise Least-Squares
+    s = fminsearch(fcn, [yr;  per;  -1;  ym]);                     % Minimise Least-Squares
     xp = linspace(-1*pi,1*pi);
     %xp = linspace(min(x),max(x));
 
     figure
     scatter(phases',Intensity_ratio')
     hold on
-    plot(x,y,'b',  xp,fit(s,xp), 'r')
+    %plot(x,y,'b',  xp,fit(s,xp), 'r') %If you want to see the original curve
+    plot(xp,fit(s,xp), 'r') 
     xlim([-1*pi, 1*pi]);
     xlabel('Phase shift (rad)')
     ylabel('Intensity(a.u.)')
+    title(['Channel ',num2str(i)])
 
     maxFit = max(fit(s,xp));
     maxIndex = find(fit(s,xp) == maxFit);
@@ -69,7 +71,7 @@ function REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
     maxIndex=find(yFit==maxFit);
     maxPoint=xFit(maxIndex);
     minPoint=xFit(minIndex);
-    %}
+    
 
     figure
     plot(f_v,phases',Intensity_ratio')
@@ -79,4 +81,6 @@ function REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
     plot(maxPoint,maxFit,'b*')
     xlabel('Phase shift (rad)')
     ylabel('Intensity(a.u.)')
+    title(['Channel' + i])
+    %}
 end
