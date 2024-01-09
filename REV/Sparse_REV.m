@@ -63,4 +63,4 @@ ylabel('Phase (rad)')
 opt_x = find(theta == 0);
 opt_y = find(phi == 0);
 
-REV_opt(Intensity_norm, Int_sum, x0, opt_x, nulls);
+[maxInt, maxPhase] = REV_opt(Intensity_norm, Int_sum, x0, opt_x, nulls);
