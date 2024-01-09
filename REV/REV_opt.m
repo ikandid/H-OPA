@@ -18,7 +18,8 @@ function REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
     x1 = x0;
 
     for i = 1:length(phases)
-        x1(1) = phases(i);
+        x1(1) = x0(1);
+        x1(1) = x1(1)+phases(i);
         %[Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90,phase_off)
         [Intensity_norm,Intensity_dB,Intensity_max,Intensity_sum,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,0,theta_0,phi_0,ant,1,x1);
         Int_sum_REV = sum(sum(Intensity_norm(:,opt-nulls:opt+nulls)));
@@ -31,6 +32,7 @@ function REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
     
     %determine the maximum intensity point and corresponding phase
     numSamplePoints = 2000; % However many you need to get the resolution you want.
+    %xFit = linspace(min(-1*pi), max(1*pi), numSamplePoints);
     xFit = linspace(min(phases), max(phases), numSamplePoints);
     yFit = polyval(c, xFit); % Evaluate the fit at the same x values.
     minFit = min(yFit); % Find min of fitted curve in the range we have fit it over.
@@ -42,9 +44,11 @@ function REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
     
 
     figure
-    plot(f_v,phases', Intensity_ratio')
+    plot(f_v,phases',Intensity_ratio')
+    xlim([-1*pi, 1*pi]);
     hold on
+    plot(f_v)
     plot(maxPoint,maxFit,'b*')
-    xlabel('Phases (rad)')
+    xlabel('Phase shift (rad)')
     ylabel('Intensity(a.u.)')
 end
