@@ -26,7 +26,7 @@ function REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
         Intensity_ratio(end+1) = Int_sum_REV/Int_sum;
     end
     
-    
+    %{
     f_v = fit(phases',Intensity_ratio','poly4'); %polynomial fit
     c = coeffvalues(f_v);
     
@@ -41,7 +41,7 @@ function REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
     maxIndex=find(yFit==maxFit);
     maxPoint=xFit(maxIndex);
     minPoint=xFit(minIndex);
-    
+    %}
 
     figure
     plot(f_v,phases',Intensity_ratio')
