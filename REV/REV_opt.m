@@ -25,10 +25,26 @@ function REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
         Intensity_ratio(end+1) = Int_sum_REV/Int_sum;
     end
     
-    f_v = fit(phases',Intensity_ratio','poly4');
+    
+    f_v = fit(phases',Intensity_ratio','poly4'); %polynomial fit
+    c = coeffvalues(f_v);
+    
+    %determine the maximum intensity point and corresponding phase
+    numSamplePoints = 2000; % However many you need to get the resolution you want.
+    xFit = linspace(min(phases), max(phases), numSamplePoints);
+    yFit = polyval(c, xFit); % Evaluate the fit at the same x values.
+    minFit = min(yFit); % Find min of fitted curve in the range we have fit it over.
+    maxFit = max(yFit); % Find max of fitted curve in the range we have fit it over.
+    minIndex=find(yFit==minFit);
+    maxIndex=find(yFit==maxFit);
+    maxPoint=xFit(maxIndex);
+    minPoint=xFit(minIndex);
+    
 
     figure
     plot(f_v,phases', Intensity_ratio')
+    hold on
+    plot(maxPoint,maxFit,'b*')
     xlabel('Phases (rad)')
     ylabel('Intensity(a.u.)')
 end
