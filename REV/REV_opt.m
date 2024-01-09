@@ -26,6 +26,34 @@ function REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
         Intensity_ratio(end+1) = Int_sum_REV/Int_sum;
     end
     
+    y = Intensity_ratio;
+    x = phases;
+
+    yu = max(Intensity_ratio);
+    yl = min(Intensity_ratio);
+    yr = (yu-yl);                               % Range of ‘y’
+    yz = y-yu+(yr/2);
+    zx = x(yz .* circshift(yz,[0 1]) <= 0);     % Find zero-crossings
+    per = 2*mean(diff(zx));                     % Estimate period
+    ym = mean(y);                               % Estimate offset
+
+    fit = @(b,x)  b(1).*(sin(2*pi*x./b(2) + 2*pi/b(3))) + b(4);    % Function to fit
+    fcn = @(b) sum((fit(b,x) - y).^2);                              % Least-Squares cost function
+    s = fminsearch(fcn, [yr;  per;  -1;  ym])                       % Minimise Least-Squares
+    xp = linspace(-1*pi,1*pi);
+    %xp = linspace(min(x),max(x));
+
+    figure
+    scatter(phases',Intensity_ratio')
+    hold on
+    plot(x,y,'b',  xp,fit(s,xp), 'r')
+    xlim([-1*pi, 1*pi]);
+    xlabel('Phase shift (rad)')
+    ylabel('Intensity(a.u.)')
+
+    maxFit = max(fit(s,xp));
+    maxIndex = find(fit(s,xp) == maxFit);
+    maxPhase = xp(maxIndex);
     %{
     f_v = fit(phases',Intensity_ratio','poly4'); %polynomial fit
     c = coeffvalues(f_v);
