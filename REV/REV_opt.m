@@ -14,6 +14,8 @@ function [maxInt, maxPhase] = REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
 
     %% REV optimization
     phases = [-2, -1, 0, 1, 2];
+    %phases = linspace(-1*pi,pi,50);
+    %phases = linspace(0,2*pi,50);
     maxInt = [];
     maxPhase = [];
     %x1 = x0;
@@ -23,9 +25,11 @@ function [maxInt, maxPhase] = REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
         Intensity_ratio = [];
         for j = 1:length(phases)
             x1(i) = x0(i); %Reset phase to original value 
-            x1(i) = x1(i)+phases(j); %Add phase shift
+            x1(i) = x1(i)-phases(j); %Add phase shift
+
             %[Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90,phase_off)
             [Intensity_norm,Intensity_dB,Intensity_max,Intensity_sum,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,0,theta_0,phi_0,ant,1,x1);
+
             Int_sum_REV = sum(sum(Intensity_norm(:,opt-nulls:opt+nulls)));
             Intensity_ratio(end+1) = Int_sum_REV/Int_sum;
         end
@@ -36,7 +40,7 @@ function [maxInt, maxPhase] = REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
         
         yu = max(Intensity_ratio);
         yl = min(Intensity_ratio);
-        yr = (yu-yl);                               % Range of �y�
+        yr = (yu-yl);                               % Range of y
         yz = y-yu+(yr/2);
         zx = x(yz .* circshift(yz,[0 1]) <= 0);     % Find zero-crossings
         per = 2*mean(diff(zx));                     % Estimate period
@@ -60,6 +64,7 @@ function [maxInt, maxPhase] = REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
         plot(maxPhase(i),maxInt(i),'b*')
         hold off
         xlim([-1*pi, 1*pi]);
+        %xlim([0, 2*pi]);
         xlabel('Phase shift (rad)')
         ylabel('Intensity(a.u.)')
         title(['Channel ',num2str(i)])
