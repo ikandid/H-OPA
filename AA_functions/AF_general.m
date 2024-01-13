@@ -1,6 +1,6 @@
 %AF_general
 %function that calculates the Array Factor
-function [Intensity_norm,Intensity_dB,Intensity_max,Intensity_sum,u,v,theta,phi,SLL]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90,phase_off)
+function [Intensity_norm,Intensity_dB,Intensity_max,Intensity_ratio,u,v,theta,phi,SLL]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90,phase_off)
 
 %paramaters
 res=1; %resolution
@@ -83,7 +83,12 @@ else
     null = null_v;
 end
 
-Intensity_sum = sum(sum(Intensity_norm(:,max_loc_u(1)-null_u:max_loc_u(1)+null_u))); %Sum of the intensity points in the ML
+%Calculate the Intensity sum in the ML and SL regions
+Intensity_sum_ML = sum(sum(Intensity_norm(:,max_loc_u(1)-null_u:max_loc_u(1)+null_u))); %Sum of the intensity points in the ML
+Intensity_sum = sum(sum(Intensity_norm)) - Intensity_sum_ML;
+Intensity_ratio = Intensity_sum/Intensity_sum_ML;
+
+%SL calculator
 Intensity_norm_SLL = Intensity_norm; %Dummy variable for calculating the SLL
 
 if (max_loc_u(1) - null_u) <= 0 

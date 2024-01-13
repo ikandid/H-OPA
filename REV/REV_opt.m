@@ -19,10 +19,10 @@ function [maxInt, maxPhase] = REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
     maxInt = [];
     maxPhase = [];
     
-    %x1 = x0;
+    x1 = x0;
 
     for i = 1:length(pos_final)
-        x1 = x0;
+        %x1 = x0;
         Intensity_ratio = [];
         calibrated_phases = [];
         for j = 1:length(phases)
@@ -34,7 +34,7 @@ function [maxInt, maxPhase] = REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
             %[Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90,phase_off)
             [Intensity_norm,Intensity_dB,Intensity_max,Intensity_sum,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,0,theta_0,phi_0,ant,1,x1);
 
-            Int_sum_REV = sum(sum(Intensity_norm(:,opt-nulls:opt+nulls)));
+            Int_sum_REV = Intensity_sum;
             Intensity_ratio(end+1) = Int_sum_REV/Int_sum;
         end
 
