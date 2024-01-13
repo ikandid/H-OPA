@@ -13,19 +13,23 @@ function [maxInt, maxPhase] = REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
     pos_final = sparse_array_def();
 
     %% REV optimization
-    phases = [-2, -1, 0, 1, 2];
+    phases = (pi/180)*[-120, -60, 0, 60, 120];
     %phases = linspace(-1*pi,pi,50);
     %phases = linspace(0,2*pi,50);
     maxInt = [];
     maxPhase = [];
+    
     %x1 = x0;
 
     for i = 1:length(pos_final)
         x1 = x0;
         Intensity_ratio = [];
+        calibrated_phases = [];
         for j = 1:length(phases)
-            x1(i) = x0(i); %Reset phase to original value 
-            x1(i) = x1(i)-phases(j); %Add phase shift
+            %x1(i) = x0(i); %Reset phase to original value 
+            %x1(i) = x1(i)+phases(j); %Add phase shift
+            x1(i) = phases(j);
+            calibrated_phases(end+1) = phases(j);
 
             %[Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90,phase_off)
             [Intensity_norm,Intensity_dB,Intensity_max,Intensity_sum,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,0,theta_0,phi_0,ant,1,x1);
@@ -56,14 +60,18 @@ function [maxInt, maxPhase] = REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
         maxIndex = find(fit(s,xp) == maxInt(i));
         maxPhase(end+1) = xp(maxIndex); %Maximum phase shift
 
+        %update channel
+        x1(i) = maxPhase(i);
+
         figure
-        scatter(phases',Intensity_ratio')
+        scatter(calibrated_phases',Intensity_ratio')
         hold on
         %plot(x,y,'b',  xp,fit(s,xp), 'r') %If you want to see the original curve
         plot(xp,fit(s,xp), 'r') 
         plot(maxPhase(i),maxInt(i),'b*')
         hold off
         xlim([-1*pi, 1*pi]);
+        ylim([0, 1]);
         %xlim([0, 2*pi]);
         xlabel('Phase shift (rad)')
         ylabel('Intensity(a.u.)')

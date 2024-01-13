@@ -46,9 +46,9 @@ res = 1;
 [Intensity_norm_theta,Intensity_dB_theta,p,theta,c,index,BW_3dB_theta,SLL_theta,nulls]=theta_cut(1,1,1,length(pos_final),res,0,pos_final,1,theta_0,ant,theta_90,phase_off);
 
 %% Random phase implementation 
-x0 = 2*pi*rand(1,15); %random phase matrix between 0-2pi
-x0 = 6*ones(1,15);
-%x0 = -1*pi + 1*pi*(1--1)*rand(1,15);
+%x0 = 2*pi*rand(1,15); %random phase matrix between 0-2pi
+%x0 = 6*ones(1,15);
+x0 = -1*pi + 1*pi*(1--1)*rand(1,15);
 Int_sum = Intensity_sum;
 
 figure 
