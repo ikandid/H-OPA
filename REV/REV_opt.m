@@ -1,5 +1,5 @@
 %REV optimization
-function [maxInt, maxPhase] = REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)  
+function [minInt, minPhase] = REV_opt(Intensity_norm,Int_ratio_ideal, x0, opt, nulls)  
     %% Parameters
     c = 3e8;
     fc = 193e12;
@@ -17,13 +17,14 @@ function [maxInt, maxPhase] = REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
     %phases = linspace(-1*pi,pi,50);
     %phases = linspace(0,2*pi,50);
     maxInt = [];
+    minInt = [];
     maxPhase = [];
-    
+    minPhase = [];
     x1 = x0;
 
     for i = 1:length(pos_final)
         %x1 = x0;
-        Intensity_ratio = [];
+        Intensity_ratio_cal = [];
         calibrated_phases = [];
         for j = 1:length(phases)
             %x1(i) = x0(i); %Reset phase to original value 
@@ -31,19 +32,20 @@ function [maxInt, maxPhase] = REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
             x1(i) = phases(j);
             calibrated_phases(end+1) = phases(j);
 
-            %[Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90,phase_off)
-            [Intensity_norm,Intensity_dB,Intensity_max,Intensity_sum,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,0,theta_0,phi_0,ant,1,x1);
+            %[Intensity_norm,Intensity_dB,Intensity_max,Intensity_ratio,u,v,theta,phi]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90,phase_off)
+            [Intensity_norm,Intensity_dB,Intensity_max,Intensity_ratio,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,0,theta_0,phi_0,ant,1,x1);
 
-            Int_sum_REV = Intensity_sum;
-            Intensity_ratio(end+1) = Int_sum_REV/Int_sum;
+            %Int_sum_REV = Intensity_sum;
+            %Intensity_ratio(end+1) = Int_sum_REV/Int_sum;
+            Intensity_ratio_cal(end+1) = Intensity_ratio;
         end
 
 
-        y = Intensity_ratio;
+        y = Intensity_ratio_cal;
         x = phases;
         
-        yu = max(Intensity_ratio);
-        yl = min(Intensity_ratio);
+        yu = max(Intensity_ratio_cal);
+        yl = min(Intensity_ratio_cal);
         yr = (yu-yl);                               % Range of y
         yz = y-yu+(yr/2);
         zx = x(yz .* circshift(yz,[0 1]) <= 0);     % Find zero-crossings
@@ -56,25 +58,29 @@ function [maxInt, maxPhase] = REV_opt(Intensity_norm,Int_sum, x0, opt, nulls)
         xp = linspace(-1*pi,1*pi);
         %xp = linspace(min(x),max(x));
         
-        maxInt(end+1) = max(fit(s,xp)); %Maximum intensity
-        maxIndex = find(fit(s,xp) == maxInt(i));
-        maxPhase(end+1) = xp(maxIndex); %Maximum phase shift
+        %maxInt(end+1) = max(fit(s,xp)); %Maximum intensity
+        %maxIndex = find(fit(s,xp) == maxInt(i));
+        %maxPhase(end+1) = xp(maxIndex); %Maximum phase shift
+
+        minInt(end+1) = min(fit(s,xp)); %Maximum intensity ratio
+        minIndex = find(fit(s,xp) == minInt(i));
+        minPhase(end+1) = xp(minIndex); %Maximum phase shift
 
         %update channel
-        x1(i) = maxPhase(i);
+        x1(i) = minPhase(i);
 
         figure
-        scatter(calibrated_phases',Intensity_ratio')
+        scatter(calibrated_phases',Intensity_ratio_cal')
         hold on
         %plot(x,y,'b',  xp,fit(s,xp), 'r') %If you want to see the original curve
         plot(xp,fit(s,xp), 'r') 
-        plot(maxPhase(i),maxInt(i),'b*')
+        plot(minPhase(i),minInt(i),'b*')
         hold off
         xlim([-1*pi, 1*pi]);
-        ylim([0, 1]);
+        %ylim([0, 1]);
         %xlim([0, 2*pi]);
         xlabel('Phase shift (rad)')
-        ylabel('Intensity(a.u.)')
+        ylabel('Intensity ratio')
         title(['Channel ',num2str(i)])
 
        
