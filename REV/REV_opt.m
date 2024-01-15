@@ -14,7 +14,7 @@ function [minInt, minPhase] = REV_opt(Intensity_norm,Int_ratio_ideal, x0, opt, n
 
     %% REV optimization
     phases = (pi/180)*[-120, -60, 0, 60, 120];
-    %phases = linspace(-1*pi,pi,50);
+    %phases = linspace(-1*pi,pi,10);
     %phases = linspace(0,2*pi,50);
     maxInt = [];
     minInt = [];

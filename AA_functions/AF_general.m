@@ -12,7 +12,7 @@ elseif theta_90 == 1
     theta=linspace(-90,90,res*181);
 end
 
-phi=linspace(-180,180,res*361);
+phi=linspace(-90,90,res*181);
 
 %u&v coordinates 
 u=sind(theta).*cosd(transpose(phi));
@@ -50,7 +50,7 @@ end
 
 %figures
 if figure_on_off == 1
-    figure
+    figure('Name','uv')
     surf(u,v,Intensity_norm)
     shading interp;
     colormap('default');

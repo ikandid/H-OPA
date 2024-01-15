@@ -49,10 +49,19 @@ res = 1;
 u_0=sind(theta_0).*cosd(transpose(phi_0)); 
 v_0=sind(theta_0).*sind(transpose(phi_0));
 phase_steer = mod(k*(pos_final(1,:)*u_0+pos_final(2,:)*v_0),2*pi);
+%phase_steer = rescale(phase_steer,-1*pi,pi);
+
 figure
 scatter(1:15,phase_steer,'o','filled')
 xlabel('Channel number')
 ylabel('Phase (rad)')
+
+% fig = openfig('uv_0.fig');
+% axObjs = fig.Children
+% dataObjs = axObjs.Children
+% x = dataObjs(1).XData
+% y = dataObjs(1).YData
+% z = dataObjs(1).ZData
 
 %% Random phase implementation 
 %x0 = 2*pi*rand(1,15); %random phase matrix between 0-2pi
