@@ -84,7 +84,11 @@ else
 end
 
 %Calculate the Intensity sum in the ML and SL regions
-Intensity_sum_ML = sum(sum(Intensity_norm(:,max_loc_u(1)-null_u:max_loc_u(1)+null_u))); %Sum of the intensity points in the ML
+if theta_0 == 0
+    Intensity_sum_ML = sum(sum(Intensity_norm(:,max_loc_u(1)-null_u:max_loc_u(1)+null_u))); %Sum of the intensity points in the ML
+else
+    Intensity_sum_ML = sum(sum(Intensity_norm(91-null_v:91+null_v,max_loc_u(1)-null_u:max_loc_u(1)+null_u)));
+end
 Intensity_sum = sum(sum(Intensity_norm)) - Intensity_sum_ML;
 Intensity_ratio = Intensity_sum/Intensity_sum_ML;
 
