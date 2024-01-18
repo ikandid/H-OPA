@@ -7,7 +7,7 @@ c = 3e8;
 fc = 193e12;
 lambda = c/fc;
 k=2*pi/lambda;%wavenumber
-theta_0=15; %theta steering angle
+theta_0=0; %theta steering angle
 phi_0=0; %phi steering angle
 theta_90=1; %0 for 0:90/ 1 for -90:90
 ant = 0; %0 for isotropic antenna/ 1 for selected antenna
@@ -56,17 +56,9 @@ scatter(1:15,phase_steer,'o','filled')
 xlabel('Channel number')
 ylabel('Phase (rad)')
 
-% fig = openfig('uv_0.fig');
-% axObjs = fig.Children
-% dataObjs = axObjs.Children
-% x = dataObjs(1).XData
-% y = dataObjs(1).YData
-% z = dataObjs(1).ZData
-
 %% Random phase implementation 
 %x0 = 2*pi*rand(1,15); %random phase matrix between 0-2pi
-%x0 = 6*ones(1,15);
-x0 = -1*pi + 1*pi*(1--1)*rand(1,15);
+x0 = -1*pi + 1*pi*(1--1)*rand(1,15); %random phase matrix between -pi-pi
 Int_ratio_ideal = Intensity_ratio;
 
 figure 
@@ -92,6 +84,7 @@ Calibrated_Intensity_Ratio = min(minInt);
 Ideal_vs_Calibrated = Int_ratio_ideal/Calibrated_Intensity_Ratio;
 
 %Calculate AF for random phase and plot intensity
+theta_0 = 0;
 [Intensity_norm,Intensity_dB,Intensity_max,Intensity_sum,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,1,theta_0,phi_0,ant,1,phase_corr);
 [Intensity_norm_theta,Intensity_dB_theta,p,theta,c,index,BW_3dB_theta,SLL_theta]=theta_cut(1,1,1,length(pos_final),res,0,pos_final,1,theta_0,ant,theta_90,phase_corr);
 

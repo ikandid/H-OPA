@@ -14,7 +14,7 @@ function [minInt, minPhase] = REV_opt(Intensity_norm,Int_ratio_ideal, x0, opt, n
 
     %% REV optimization
     phases = (pi/180)*[-120, -60, 0, 60, 120];
-    %phases = linspace(-1*pi,pi,10);
+    %phases = linspace(-1*pi,pi,25);
     %phases = linspace(0,2*pi,50);
     maxInt = [];
     minInt = [];
@@ -28,9 +28,12 @@ function [minInt, minPhase] = REV_opt(Intensity_norm,Int_ratio_ideal, x0, opt, n
         calibrated_phases = [];
         for j = 1:length(phases)
             %x1(i) = x0(i); %Reset phase to original value 
-            %x1(i) = x1(i)+phases(j); %Add phase shift
+            %x1(i) = wrapToPi(x1(i)+phases(j)); %Add phase shift
+            %calibrated_phases(end+1) = wrapToPi(x1(i)+phases(j));
+            
             x1(i) = phases(j);
             calibrated_phases(end+1) = phases(j);
+            
 
             %[Intensity_norm,Intensity_dB,Intensity_max,Intensity_ratio,u,v,theta,phi]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90,phase_off)
             [Intensity_norm,Intensity_dB,Intensity_max,Intensity_ratio,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,0,theta_0,phi_0,ant,1,x1);
@@ -42,7 +45,7 @@ function [minInt, minPhase] = REV_opt(Intensity_norm,Int_ratio_ideal, x0, opt, n
 
 
         y = Intensity_ratio_cal;
-        x = phases;
+        x = calibrated_phases;
         
         yu = max(Intensity_ratio_cal);
         yl = min(Intensity_ratio_cal);
@@ -62,9 +65,9 @@ function [minInt, minPhase] = REV_opt(Intensity_norm,Int_ratio_ideal, x0, opt, n
         %maxIndex = find(fit(s,xp) == maxInt(i));
         %maxPhase(end+1) = xp(maxIndex); %Maximum phase shift
 
-        minInt(end+1) = min(fit(s,xp)); %Maximum intensity ratio
+        minInt(end+1) = min(fit(s,xp)); %Minimum intensity ratio
         minIndex = find(fit(s,xp) == minInt(i));
-        minPhase(end+1) = xp(minIndex); %Maximum phase shift
+        minPhase(end+1) = xp(minIndex); %Minimum phase shift
 
         %update channel
         x1(i) = minPhase(i);
@@ -86,32 +89,4 @@ function [minInt, minPhase] = REV_opt(Intensity_norm,Int_ratio_ideal, x0, opt, n
        
     end
     
-   
-    %{
-    f_v = fit(phases',Intensity_ratio','poly4'); %polynomial fit
-    c = coeffvalues(f_v);
-    
-    %determine the maximum intensity point and corresponding phase
-    numSamplePoints = 2000; % However many you need to get the resolution you want.
-    %xFit = linspace(min(-1*pi), max(1*pi), numSamplePoints);
-    xFit = linspace(min(phases), max(phases), numSamplePoints);
-    yFit = polyval(c, xFit); % Evaluate the fit at the same x values.
-    minFit = min(yFit); % Find min of fitted curve in the range we have fit it over.
-    maxFit = max(yFit); % Find max of fitted curve in the range we have fit it over.
-    minIndex=find(yFit==minFit);
-    maxIndex=find(yFit==maxFit);
-    maxPoint=xFit(maxIndex);
-    minPoint=xFit(minIndex);
-    
-
-    figure
-    plot(f_v,phases',Intensity_ratio')
-    xlim([-1*pi, 1*pi]);
-    hold on
-    plot(f_v)
-    plot(maxPoint,maxFit,'b*')
-    xlabel('Phase shift (rad)')
-    ylabel('Intensity(a.u.)')
-    title(['Channel' + i])
-    %}
 end
