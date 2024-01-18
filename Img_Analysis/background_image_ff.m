@@ -52,7 +52,7 @@ ylabel('Y')
 
 %find the aperture ring using findcircles()
 [x_center,y_center,X,Y,radius] = find_aperture_ring(ff,fig_off_on);
-
+%radius = 116;
 %x_center = 122;
 %y_center = 122
 %Calculate the avg_pix of the total ff image and the max ff pix
@@ -72,7 +72,7 @@ max_ff_pix = max(max((ff((y_center-radius):(y_center+radius),(x_center-radius):(
 
 %FF w/o bad/dead pixels
 figure()
-surf(img_y,img_x,ff_norm); hold on
+surf(img_y,img_x,ff); hold on
 plot(x_center-X,y_center-Y,'r-','linewidth',2);
 shading interp;
 colormap('default');

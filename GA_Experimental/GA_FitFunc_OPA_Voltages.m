@@ -41,8 +41,8 @@ function fitness_function_voltage = GA_FitFunc_OPA_Voltages(x0)
     range_Y = 5;
     %range = 10;
     pattern_radius = 114;
-    xloc = 136;
-    yloc = 132;
+    xloc = 144;
+    yloc = 128;
 
     xloc_steering = 136;
     yloc_steering = 126;
