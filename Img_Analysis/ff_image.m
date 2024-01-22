@@ -4,7 +4,7 @@ clear all;
 fig_off_on = 0;
 
 %script to visualize the calibrated far field result
-%load('H:\Research\2023\Honeywell - Ilyas\GA -Experimental\Testing\Temp_img\best_farfieldimg.mat');
+load('H:\Research\2023\Honeywell - Ilyas\GA -Experimental\Testing\Temp_img\best_farfieldimg.mat');
 %load('H:\Research\2023\Honeywell - Ilyas\Progress pics\December\12.11.23\GA runs\Run 2\best_farfieldimg.mat')
 
 %%

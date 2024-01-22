@@ -40,9 +40,9 @@ function fitness_function_voltage = GA_FitFunc_OPA_Voltages(x0)
     range_X = 5; %half the size of aperture
     range_Y = 5;
     %range = 10;
-    pattern_radius = 114;
-    xloc = 144;
-    yloc = 128;
+    pattern_radius = 115;
+    xloc = 134;
+    yloc = 129;
 
     xloc_steering = 136;
     yloc_steering = 126;
