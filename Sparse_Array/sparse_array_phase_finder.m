@@ -33,7 +33,7 @@ label = cellstr(num2str([length(pos_final):1]'));
 text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,label);
 
 %mesh grid defintion
-tilt = 3; %tilt angle
+tilt = 2.5; %tilt angle
 x = -100:0.1:100;
 y = -100:0.1:100;
 [X,Y] = meshgrid(-100:0.1:100);
@@ -67,9 +67,42 @@ end
 z_phase = z_dist*1e-6/lambda*2*pi;
 z_phase2 = mod(z_phase,2*pi);
 z_phase2 = flip(z_phase2);
-%OPA voltage curve
-p = [-0.004517, 0.0756, -0.4994, 2.711, 1.341];
-phase = linspace(0,2*pi,10000);
+
+%Phase to Power
+load("Currentdata.mat")
+c_v = 1;
+c_i = 3;
+
+T = table2array(Currentdata);
+
+V_I = [];
+V_I(:,1) = double(T(:,c_v)); %Voltage
+V_I(:,2) = double(T(:,c_i)); %Current
+V_I(:,3) = V_I(:,1).*V_I(:,2); %Heater Power
+
+P_pi = 67.9310; %Measured power for pi phase shift
+Ph = pi/P_pi*V_I(:,3);
+
+load('f_p.mat');
+f_pp = f_p;
+Phase2Power = [];
+desired_y = [];
+for i = 1:length(z_phase2)
+    fun = @(Ph) z_phase2(i) - f_pp(Ph);
+    Phase2Power(end+1) = fzero(fun,0);
+    desired_y(end+1) = f_pp(Phase2Power(i));
+end
+
+%Calibrated Voltage2Power
+load('f_vi.mat');
+load('PT_settings.mat');
+Voltage2Power = [];
+for i = 1:length(z_phase2)
+    Voltage2Power(end+1) = f_vi(PT_Settings(1,i))*PT_settings(1,i);
+end
+
+% = [-.09578 3.077 -0.1692];
+%phase = linspace(0,2*pi,10000);
 
 %function for phase to voltage
 f = p(1)*phase.^4 + p(2)*phase.^3 + p(3)*phase.^2 + p(4)*phase + p(5);
