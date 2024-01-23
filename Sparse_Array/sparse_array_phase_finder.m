@@ -1,5 +1,5 @@
 %Sparse array phase extracter
-close all;
+%close all;
 clear all;
 
 %parameters
@@ -68,6 +68,7 @@ z_phase = z_dist*1e-6/lambda*2*pi;
 z_phase2 = mod(z_phase,2*pi);
 z_phase2 = flip(z_phase2);
 
+%% Phase2Power2Voltage
 %Phase to Power
 load("Currentdata.mat")
 c_v = 1;
@@ -94,13 +95,44 @@ for i = 1:length(z_phase2)
 end
 
 %Calibrated Voltage2Power
-load('f_vi.mat');
+load('f_vp.mat');
 load('PT_settings.mat');
 Voltage2Power = [];
 for i = 1:length(z_phase2)
-    Voltage2Power(end+1) = f_vi(PT_Settings(1,i))*PT_settings(1,i);
+    Voltage2Power(end+1) = f_vp(PT_settings(i,1));
+    if Voltage2Power(i) < 0
+        Voltage2Power(i) = 0;
+    end
 end
 
+%Calculate the Current Power
+CurrentPower = Phase2Power + Voltage2Power;
+for i = 1:length(z_phase2)
+    if CurrentPower(i) > P_pi*2
+        CurrentPower(i) = CurrentPower(i) - 2*P_pi; %Remap heater power w/ phases higher than 2pi back to 0-2pi
+    end
+end
+
+%Convert Current Power to Voltage
+load('f_vp.mat');
+Power2Voltage = [];
+desired_y = [];
+x = V_I(:,3);
+%x = linspace(0,300,100); %Voltage values
+%Pw = 1.69*x.^2 + 4.742.*x - 2.319; %Power function
+
+for i = 1:length(z_phase2)
+    fun = @(x) CurrentPower(i) - f_vp(x);
+    Power2Voltage(end+1) = fzero(fun,0);
+    desired_y(end+1) = f_vp(Power2Voltage(i));
+end
+
+PT_settings = zeros(16,4000);
+for i = 1:4000
+    PT_settings(1:15,i) = transpose(Power2Voltage);
+end
+
+%%
 % = [-.09578 3.077 -0.1692];
 %phase = linspace(0,2*pi,10000);
 
@@ -172,3 +204,10 @@ for i = 1:4000
     PT_settings(1:15,i) = transpose(voltage_steered);
 end
 %}
+
+
+%x = linspace(0,15,100);
+x = V_I(:,3);
+%y = 1.69*x.^2 + 4.742.*x - 2.319;
+figure
+plot(f_vp(x))

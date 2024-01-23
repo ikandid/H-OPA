@@ -19,12 +19,19 @@ P_pi = 67.9310; %Measured power for pi phase shift
 Ph = pi/P_pi*V_I(:,3);
 
 
-f_vi = fit(V_I(:,1),V_I(:,2),'poly2');
+f_vi = fit(V_I(:,1),V_I(:,2),'poly5');
 figure
-%scatter(V_I(:,2),V_I(:,1),'o')
 plot(f_vi,V_I(:,1),V_I(:,2))
 ylabel('Current (mA)')
 xlabel('Voltage (V)')
+
+f_vp = fit(V_I(:,1),V_I(:,3),'poly2');
+figure
+plot(f_vp,V_I(:,1),V_I(:,3))
+ylabel('Power (mW)')
+xlabel('Voltage (V)')
+
+
 
 %f_vi(PT_settings(1,1))
 figure 
