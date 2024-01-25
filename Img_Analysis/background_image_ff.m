@@ -1,4 +1,4 @@
-/%ff image pre-phase shift
+%ff image pre-phase shift
 close all;
 clear all;
 

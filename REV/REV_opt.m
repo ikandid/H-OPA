@@ -13,7 +13,8 @@ function [minInt, minPhase] = REV_opt(Intensity_norm,Int_ratio_ideal, x0, opt, n
     pos_final = sparse_array_def();
 
     %% REV optimization
-    phases = (pi/180)*[-120, -60, 0, 60, 120];
+    %phases = (pi/180)*[-120, -60, 0, 60, 120];
+    phases = (pi/180)*[-120, 0, 120];
     %phases = linspace(-1*pi,pi,25);
     %phases = linspace(0,2*pi,50);
     maxInt = [];

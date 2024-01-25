@@ -1,15 +1,15 @@
 close all;
-clear all;
+%clear all;
 
 fig_off_on = 0;
 
 %script to visualize the calibrated far field result
-load('H:\Research\2023\Honeywell - Ilyas\GA -Experimental\Testing\Temp_img\best_farfieldimg.mat');
+%load('H:\Research\2023\Honeywell - Ilyas\GA -Experimental\Testing\Temp_img\best_farfieldimg.mat');
 %load('H:\Research\2023\Honeywell - Ilyas\Progress pics\December\12.11.23\GA runs\Run 2\best_farfieldimg.mat')
 
 %%
 [pix_loc,avg_pix] = background_image_save_func(fig_off_on);
-ff = myimage;
+%ff = myimage;
 ff = double(ff);
 
 %Perform background subtraction
@@ -44,8 +44,8 @@ ylabel('Y')
 % max_ff_pix = max(max((ff((x_center-radius):(x_center+radius),(y_center-radius):(y_center+radius)))));
 
 %ML location
-ML_loc_x = 127;
-ML_loc_y = 135;
+ML_loc_x = 175;
+ML_loc_y = 124;
 fig_off_on = 1;
 
 [SLL_theta_x, SLL_theta_y, BW_3dB_theta_x, BW_3dB_theta_y] = measurements_cuts_OPA(ff, pix_xlen, pix_ylen, ML_loc_x, ML_loc_y,fig_off_on);

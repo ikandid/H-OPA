@@ -33,7 +33,7 @@ label = cellstr(num2str([length(pos_final):1]'));
 text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,label);
 
 %mesh grid defintion
-tilt = 2.5; %tilt angle
+tilt = -2; %tilt angle
 x = -100:0.1:100;
 y = -100:0.1:100;
 [X,Y] = meshgrid(-100:0.1:100);
@@ -123,7 +123,7 @@ x = V_I(:,3);
 
 for i = 1:length(z_phase2)
     fun = @(x) CurrentPower(i) - f_vp(x);
-    Power2Voltage(end+1) = fzero(fun,0);
+    Power2Voltage(end+1) = fzero(fun,[0 10]);
     desired_y(end+1) = f_vp(Power2Voltage(i));
 end
 
@@ -207,7 +207,9 @@ end
 
 
 %x = linspace(0,15,100);
-x = V_I(:,3);
-%y = 1.69*x.^2 + 4.742.*x - 2.319;
+x = linspace(-25,25,100);
+%x = V_I(:,3);
+%y = 1.69*x.^2 + 4.7
+%42.*x - 2.319;
 figure
-plot(f_vp(x))
+plot(x,f_vp(x))
