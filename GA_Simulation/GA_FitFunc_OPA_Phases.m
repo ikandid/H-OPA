@@ -1,4 +1,4 @@
-function Intensity_ratio = GA_FitFunc_OPA_Phases(phase_off)
+function Intensity_ratio = GA_FitFunc_OPA_Phases(x0)
     
     %% Parameters
     c = 3e8;
@@ -19,6 +19,7 @@ function Intensity_ratio = GA_FitFunc_OPA_Phases(phase_off)
     %x0 = -1*pi + 1*pi*(1--1)*rand(1,15); %random phase matrix between -pi-pi
 
     %Calculate AF for random phase and plot intensity
-    [Intensity_norm,Intensity_dB,Intensity_max,Intensity_ratio,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,1,theta_0,phi_0,ant,1,x0);
+    %[Intensity_norm,Intensity_dB,Intensity_max,u,v,theta,phi]=AF_general(A,B,C,D,pos_final,lambda,figure_on_off,theta_0,phi_0,ant,theta_90,phase_off)
+    [Intensity_norm,Intensity_dB,Intensity_max,Intensity_ratio,u,v,theta,phi,SLL]=AF_general(1,1,1,length(pos_final),pos_final,lambda,0,theta_0,phi_0,ant,1,x0);
     
 end

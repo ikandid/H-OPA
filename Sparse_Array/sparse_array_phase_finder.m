@@ -33,11 +33,11 @@ label = cellstr(num2str([length(pos_final):1]'));
 text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,label);
 
 %mesh grid defintion
-tilt = -2; %tilt angle
+tilt = -1.5; %tilt angle
 x = -100:0.1:100;
 y = -100:0.1:100;
 [X,Y] = meshgrid(-100:0.1:100);
-Z = meshgrid(-100:0.1:100)*sind(tilt);
+Z = meshgrid(-100:0.1:100)*cosd(tilt);
 figure
 surf(X,Y,Z)
 hold on
@@ -52,13 +52,14 @@ zlabel('z(um)')
 
 %labels each element with an index
 label = cellstr(num2str([1:length(pos_final)]'));
-text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,flip(label));
+text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,(label));
 
 %Determine the z height corresponds with emitter location
 z_loc = [];
 z_dist = [];
 for i = 1:length(pos_final)
-    [z_val z_loc] = min(abs(x-pos_final(1,i)/1e-6));
+    %[z_val z_loc] = min(abs(x-pos_final(1,i)/1e-6)); %sind
+    [z_val z_loc] = min(abs(y-pos_final(2,i)/1e-6));  %cosd
     %z_loc(end+1) = find(round(x,3,'significant')==round(pos_final(1,i)/1e-6,2,'significant'));
     %z_dist(end+1) = abs((Z(1,z_loc)));
     z_dist(end+1) = Z(1,z_loc);
@@ -66,7 +67,7 @@ end
 
 z_phase = z_dist*1e-6/lambda*2*pi;
 z_phase2 = mod(z_phase,2*pi);
-z_phase2 = flip(z_phase2);
+%z_phase2 = flip(z_phase2);
 
 %% Phase2Power2Voltage
 %Phase to Power

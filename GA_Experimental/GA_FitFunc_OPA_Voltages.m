@@ -44,8 +44,8 @@ function fitness_function_voltage = GA_FitFunc_OPA_Voltages(x0)
     xloc = 134;
     yloc = 129;
 
-    xloc_steering = 136;
-    yloc_steering = 126;
+    xloc_steering = 126;
+    yloc_steering = 171;
     
     
     %pival=sum(sum(myimage((xloc-range_X):(xloc+range_X),(yloc-range_Y):(yloc+range_Y)))); %get pixel value in aperture;

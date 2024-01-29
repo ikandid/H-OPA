@@ -26,8 +26,8 @@ function out = RunGA_OPA(problem, params)
     pop = repmat(empty_individual, nPop, 1);
 
     %Phases (0-2pi)
-    xhi=2*pi;
-    xlo=0;
+    xhi=1*pi;
+    xlo=-1*pi;
     
     
     for i = 1:nPop
