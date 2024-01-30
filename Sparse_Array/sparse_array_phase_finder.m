@@ -15,7 +15,7 @@ ant = 0; %0 for isotropic antenna/ 1 for selected antenna
 res=1; %resolution
 
 %Sparse array_def is a function that simulates the sparse array on the chip
-pos_final = sparse_array_def();
+pos_final = sparse_array_def2();
 pos_final = pos_final(:,1:15);
 figure
 hold on
@@ -33,11 +33,11 @@ label = cellstr(num2str([length(pos_final):1]'));
 text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,label);
 
 %mesh grid defintion
-tilt = -1.5; %tilt angle
+tilt = -1; %tilt angle
 x = -100:0.1:100;
 y = -100:0.1:100;
 [X,Y] = meshgrid(-100:0.1:100);
-Z = meshgrid(-100:0.1:100)*cosd(tilt);
+Z = meshgrid(-100:0.1:100)*sind(tilt);
 figure
 surf(X,Y,Z)
 hold on
@@ -58,8 +58,8 @@ text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,(label));
 z_loc = [];
 z_dist = [];
 for i = 1:length(pos_final)
-    %[z_val z_loc] = min(abs(x-pos_final(1,i)/1e-6)); %sind
-    [z_val z_loc] = min(abs(y-pos_final(2,i)/1e-6));  %cosd
+    [z_val z_loc] = min(abs(x-pos_final(1,i)/1e-6)); %sind
+    %[z_val z_loc] = min(abs(y-pos_final(2,i)/1e-6));  %cosd
     %z_loc(end+1) = find(round(x,3,'significant')==round(pos_final(1,i)/1e-6,2,'significant'));
     %z_dist(end+1) = abs((Z(1,z_loc)));
     z_dist(end+1) = Z(1,z_loc);
@@ -108,11 +108,11 @@ end
 
 %Calculate the Current Power
 CurrentPower = Phase2Power + Voltage2Power;
-for i = 1:length(z_phase2)
-    if CurrentPower(i) > P_pi*2
-        CurrentPower(i) = CurrentPower(i) - 2*P_pi; %Remap heater power w/ phases higher than 2pi back to 0-2pi
-    end
-end
+% for i = 1:length(z_phase2)
+%     if CurrentPower(i) > P_pi*2
+%         CurrentPower(i) = CurrentPower(i) - 2*P_pi; %Remap heater power w/ phases higher than 2pi back to 0-2pi
+%     end
+% end
 
 %Convert Current Power to Voltage
 load('f_vp.mat');
@@ -124,7 +124,8 @@ x = V_I(:,3);
 
 for i = 1:length(z_phase2)
     fun = @(x) CurrentPower(i) - f_vp(x);
-    Power2Voltage(end+1) = fzero(fun,[0 10]);
+    Power2Voltage(end+1) = fzero(fun,[0 13]);
+    %Power2Voltage(end+1) = fzero(fun,0);
     desired_y(end+1) = f_vp(Power2Voltage(i));
 end
 

@@ -35,7 +35,7 @@ ylabel('Y')
 
 %Set the bad/dead pixels to the average pixel value
 for i=1:length(pix_loc)
-    ff(pix_loc(i)) = avg_pix;
+   ff(pix_loc(i)) = avg_pix;
 end
 
 %Perform background subtraction
