@@ -57,3 +57,9 @@ figure
 plot(f_v,V_I(:,1), Ph)
 xlabel('Voltage (V)')
 ylabel('Phase (rad)')
+
+x = linspace(0,12,1000);
+figure
+plot(x,f_v(x))
+xlabel('Voltage (V)')
+ylabel('Phase (rad)')

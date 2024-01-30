@@ -33,7 +33,7 @@ label = cellstr(num2str([length(pos_final):1]'));
 text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,label);
 
 %mesh grid defintion
-tilt = -1; %tilt angle
+tilt = 4.5; %tilt angle
 x = -100:0.1:100;
 y = -100:0.1:100;
 [X,Y] = meshgrid(-100:0.1:100);
@@ -109,16 +109,18 @@ end
 %Calculate the Current Power
 CurrentPower = Phase2Power + Voltage2Power;
 % for i = 1:length(z_phase2)
-%     if CurrentPower(i) > P_pi*2
+%     if CurrentPower(i) > 230
 %         CurrentPower(i) = CurrentPower(i) - 2*P_pi; %Remap heater power w/ phases higher than 2pi back to 0-2pi
 %     end
 % end
 
 %Convert Current Power to Voltage
 load('f_vp.mat');
+load('f_v.mat');
 Power2Voltage = [];
 desired_y = [];
 x = V_I(:,3);
+volts = linspace(0,10,1000);
 %x = linspace(0,300,100); %Voltage values
 %Pw = 1.69*x.^2 + 4.742.*x - 2.319; %Power function
 
@@ -127,7 +129,16 @@ for i = 1:length(z_phase2)
     Power2Voltage(end+1) = fzero(fun,[0 13]);
     %Power2Voltage(end+1) = fzero(fun,0);
     desired_y(end+1) = f_vp(Power2Voltage(i));
+
+    if Power2Voltage(i) > 10.3
+        voltage2Phase = f_v(Power2Voltage(i));
+        voltage2Phase = mod(voltage2Phase,2*pi);
+
+        fun = @(volts) voltage2Phase - f_v(volts);
+        Power2Voltage(i) = fzero(fun,[0 10]);
+    end
 end
+
 
 PT_settings = zeros(16,4000);
 for i = 1:4000
@@ -209,7 +220,7 @@ end
 
 
 %x = linspace(0,15,100);
-x = linspace(-25,25,100);
+x = linspace(0,12,100);
 %x = V_I(:,3);
 %y = 1.69*x.^2 + 4.7
 %42.*x - 2.319;
