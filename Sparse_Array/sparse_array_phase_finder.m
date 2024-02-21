@@ -33,7 +33,7 @@ label = cellstr(num2str([length(pos_final):1]'));
 text(pos_final(1,:)'/1e-6,pos_final(2,:)'/1e-6,label);
 
 %mesh grid defintion
-tilt = 4.5; %tilt angle
+tilt = 2.5; %tilt angle
 x = -100:0.1:100;
 y = -100:0.1:100;
 [X,Y] = meshgrid(-100:0.1:100);
@@ -130,13 +130,13 @@ for i = 1:length(z_phase2)
     %Power2Voltage(end+1) = fzero(fun,0);
     desired_y(end+1) = f_vp(Power2Voltage(i));
 
-    if Power2Voltage(i) > 10.3
-        voltage2Phase = f_v(Power2Voltage(i));
-        voltage2Phase = mod(voltage2Phase,2*pi);
-
-        fun = @(volts) voltage2Phase - f_v(volts);
-        Power2Voltage(i) = fzero(fun,[0 10]);
-    end
+%     if Power2Voltage(i) > 10.3
+%         voltage2Phase = f_v(Power2Voltage(i));
+%         voltage2Phase = mod(voltage2Phase,2*pi);
+% 
+%         fun = @(volts) voltage2Phase - f_v(volts);
+%         Power2Voltage(i) = fzero(fun,[0 10]);
+%     end
 end
 
 
